@@ -3,11 +3,11 @@ from conan import ConanFile
 class ConanCache(ConanFile):
     settings = "arch", "build_type", "compiler", "os"
     requires = (
-        "imgui/1.89.4",
-        "spdlog/1.11.0",
+        "imgui/1.90",
+        "spdlog/1.12.0",
         "bullet3/3.25",
         "lodepng/cci.20200615",
-        "zstd/1.5.0"
+        "zstd/1.5.5"
     )
 
     def requirements(self):

@@ -14,7 +14,7 @@ jobs:
       run: |
         git config --global core.autocrlf false
         git config --global core.eol lf
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
     - name: Install dependencies
@@ -37,12 +37,16 @@ jobs:
   linux:
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
     - name: Install dependencies
       run: |
         sudo pip install conan
+
+        # Temporary workaround for GitHub runner bug #8659, removing GCC 13 as it's incompatible with Clang 13/14.
+        sudo apt-get purge -y g++-13 gcc-13 libstdc++-13-dev
+        sudo apt-get install -y --allow-downgrades libstdc++-12-dev libstdc++6=12.* libgcc-s1=12.*
     - name: Config
       env:
         CONAN_PASSWORD: ${{ secrets.ARTIFACTORY_APIKEY }}
@@ -57,10 +61,11 @@ jobs:
         conan install . -pr:h profiles/linux.profile -pr:b profiles/linux.profile -b missing -s build_type=MinSizeRel
     - name: Upload
       run: conan upload "*" -r triada -c
+
   macos:
     runs-on: macos-12
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
     - name: Install dependencies
@@ -80,10 +85,33 @@ jobs:
     - name: Upload
       run: conan upload "*" -r triada -c
 
+  macos-armv8:
+    runs-on: macos-14
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+    - name: Install dependencies
+      run: pip3 install conan
+    - name: Config
+      env:
+        CONAN_PASSWORD: ${{ secrets.ARTIFACTORY_APIKEY }}
+      run: |
+        conan remote add triada ${{ secrets.ARTIFACTORY_URL }}
+        conan remote login triada ${{ secrets.ARTIFACTORY_USER }}
+    - name: Build
+      run: |
+        conan install . -pr:h profiles/macos-armv8.profile -pr:b profiles/macos-armv8.profile -b missing -s build_type=Debug
+        conan install . -pr:h profiles/macos-armv8.profile -pr:b profiles/macos-armv8.profile -b missing -s build_type=Release
+        conan install . -pr:h profiles/macos-armv8.profile -pr:b profiles/macos-armv8.profile -b missing -s build_type=RelWithDebInfo
+        conan install . -pr:h profiles/macos-armv8.profile -pr:b profiles/macos-armv8.profile -b missing -s build_type=MinSizeRel
+    - name: Upload
+      run: conan upload "*" -r triada -c
+
   ios:
     runs-on: macos-12
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
     - name: Install dependencies
