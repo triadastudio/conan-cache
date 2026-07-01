@@ -6,7 +6,7 @@ class ConanCache(ConanFile):
         "imgui/1.92.8",
         "spdlog/1.17.0",
         "rapidjson/cci.20250205",
-        "zstd/1.5.5",
+        "zstd/1.5.7",
         "miniaudio/0.11.22",
         "toml11/4.4.0",
     )
