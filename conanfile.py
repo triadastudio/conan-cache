@@ -4,11 +4,11 @@ class ConanCache(ConanFile):
     settings = "arch", "build_type", "compiler", "os"
     requires = (
         "imgui/1.92.8",
-        "spdlog/1.17.0",
-        "rapidjson/cci.20250205",
-        "zstd/1.5.7",
         "miniaudio/0.11.22",
+        "rapidjson/cci.20250205",
+        "spdlog/1.17.0",
         "toml11/4.4.0",
+        "zstd/1.5.7",
     )
 
     def requirements(self):
