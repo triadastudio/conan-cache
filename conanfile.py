@@ -15,4 +15,4 @@ class ConanCache(ConanFile):
         if self.settings.os in ["Windows", "Linux"]:
             self.requires("glfw/3.4")
         if self.settings.os in ["Windows", "Linux", "Macos"]:
-            self.requires("gtest/1.13.0")
+            self.requires("gtest/1.17.0")
