@@ -3,15 +3,16 @@ from conan import ConanFile
 class ConanCache(ConanFile):
     settings = "arch", "build_type", "compiler", "os"
     requires = (
-        "imgui/1.91.0",
-        "spdlog/1.14.1",
-        "bullet3/3.25",
-        "lodepng/cci.20200615",
-        "zstd/1.5.5"
+        "imgui/1.92.8",
+        "miniaudio/0.11.22",
+        "rapidjson/cci.20250205",
+        "spdlog/1.17.0",
+        "toml11/4.4.0",
+        "zstd/1.5.7",
     )
 
     def requirements(self):
         if self.settings.os in ["Windows", "Linux"]:
             self.requires("glfw/3.4")
         if self.settings.os in ["Windows", "Linux", "Macos"]:
-            self.requires("gtest/1.13.0")
+            self.requires("gtest/1.17.0")
