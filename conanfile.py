@@ -14,5 +14,10 @@ class ConanCache(ConanFile):
     def requirements(self):
         if self.settings.os in ["Windows", "Linux"]:
             self.requires("glfw/3.4")
+        if self.settings.os == "Linux":
+            self.requires("libcurl/8.23.0")
+            # libcurl asks for version ranges, pin them so a newer ConanCenter release still finds these binaries
+            self.requires("openssl/3.6.5", override=True)
+            self.requires("zlib/1.3.2", override=True)
         if self.settings.os in ["Windows", "Linux", "Macos"]:
             self.requires("gtest/1.17.0")
